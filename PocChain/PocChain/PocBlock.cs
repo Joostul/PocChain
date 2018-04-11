@@ -6,22 +6,22 @@ namespace PocChain
 {
     public class PocBlock
     {
-        private long Index { get; set; }
-        private DateTime TimeStamp { get; set; }
-        private object Data { get; set; }
-        private string PreviousHash { get; set; }
-        private string Hash { get; set; }
+        internal long Index { get; }
+        internal DateTime TimeStamp { get; }
+        internal object Data { get; }
+        internal string PreviousHash { get; set; }
+        internal string Hash { get; set; }
 
-        public PocBlock(long index, DateTime timeStamp, object data, string previousHash)
+        public PocBlock(long index, object data, string previousHash)
         {
             Index = index;
-            TimeStamp = timeStamp;
+            TimeStamp = DateTime.UtcNow;
             Data = data;
             PreviousHash = previousHash;
             Hash = CalculateHash();
         }
 
-        private string CalculateHash()
+        internal string CalculateHash()
         {
             var hashString = new SHA256Managed();
             var input = Encoding.ASCII.GetBytes(Index + TimeStamp.ToString() + Data + PreviousHash);

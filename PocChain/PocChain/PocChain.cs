@@ -1,0 +1,52 @@
+﻿using System.Collections.Generic;
+
+namespace PocChain
+{
+    public class PocChain
+    {
+        public List<PocBlock> Chain { get; set; }
+
+        public PocChain()
+        {
+            Chain.Add(CreateGenesisBlock());
+        }
+
+        private PocBlock CreateGenesisBlock()
+        {
+            return new PocBlock(0, "Genisis Block", "0");
+        }
+
+        public PocBlock GetLatestBlock()
+        {
+            return Chain[Chain.Count-1];
+        }
+
+        public void AddBlock(PocBlock newBlock)
+        {
+            newBlock.PreviousHash = GetLatestBlock().Hash;
+            newBlock.Hash = newBlock.CalculateHash();
+            Chain.Add(newBlock);
+        }
+
+        public bool IsChainValid()
+        {
+            for (int i = 1; i < Chain.Count; i++)
+            {
+                var currentBlock = Chain[i];
+                var previousBlock = Chain[i - 1];
+
+                if(currentBlock.Hash != currentBlock.CalculateHash())
+                {
+                    return false;
+                }
+
+                if(currentBlock.PreviousHash != previousBlock.Hash)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+}
