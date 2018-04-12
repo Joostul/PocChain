@@ -6,11 +6,12 @@ namespace PocChain
 {
     public class PocBlock
     {
-        internal long Index { get; }
-        internal DateTime TimeStamp { get; }
-        internal object Data { get; }
-        internal string PreviousHash { get; set; }
-        internal string Hash { get; set; }
+        public long Index { get; }
+        public DateTime TimeStamp { get; }
+        public object Data { get; }
+        public int Nonce { get; private set; }
+        public string PreviousHash { get; set; }
+        public string Hash { get; set; }
 
         public PocBlock(long index, object data, string previousHash)
         {
@@ -21,12 +22,27 @@ namespace PocChain
             Hash = CalculateHash();
         }
 
-        internal string CalculateHash()
+        public string CalculateHash()
         {
             var hashString = new SHA256Managed();
-            var input = Encoding.ASCII.GetBytes(Index + TimeStamp.ToString() + Data + PreviousHash);
+            var input = Encoding.ASCII.GetBytes(Index + TimeStamp.ToString() + Data + PreviousHash + Nonce.ToString());
             var result = hashString.ComputeHash(input);
             return result.ToString();
+        }
+
+        public void MineBlock(int difficulty)
+        {
+            var difficultyList = new char[difficulty + 1];
+            for (int i = 0; i < difficulty + 1; i++)
+            {
+                difficultyList[i] = '0';
+            }
+
+            while(Hash.Substring(0, difficulty).ToCharArray() != difficultyList)
+            {
+                Nonce++;
+                Hash = CalculateHash();
+            }
         }
     }
 }

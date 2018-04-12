@@ -5,10 +5,12 @@ namespace PocChain
     public class PocChain
     {
         public List<PocBlock> Chain { get; set; }
+        public int Difficulty { get; set; }
 
         public PocChain()
         {
             Chain.Add(CreateGenesisBlock());
+            Difficulty = 4;
         }
 
         private PocBlock CreateGenesisBlock()
@@ -24,7 +26,7 @@ namespace PocChain
         public void AddBlock(PocBlock newBlock)
         {
             newBlock.PreviousHash = GetLatestBlock().Hash;
-            newBlock.Hash = newBlock.CalculateHash();
+            newBlock.MineBlock(Difficulty);
             Chain.Add(newBlock);
         }
 
