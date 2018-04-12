@@ -9,11 +9,11 @@ namespace PocChain
         public long Index { get; }
         public DateTime TimeStamp { get; }
         public object Data { get; }
-        public int Nonce { get; private set; }
-        public string PreviousHash { get; set; }
-        public string Hash { get; set; }
+        public uint Nonce { get; private set; }
+        public char[] PreviousHash { get; set; }
+        public char[] Hash { get; set; }
 
-        public PocBlock(long index, object data, string previousHash)
+        public PocBlock(long index, object data, char[] previousHash)
         {
             Index = index;
             TimeStamp = DateTime.UtcNow;
@@ -22,23 +22,23 @@ namespace PocChain
             Hash = CalculateHash();
         }
 
-        public string CalculateHash()
+        public char[] CalculateHash()
         {
             var hashString = new SHA256Managed();
-            var input = Encoding.ASCII.GetBytes(Index + TimeStamp.ToString() + Data + PreviousHash + Nonce.ToString());
+            var input = Encoding.UTF8.GetBytes(Index + TimeStamp.ToString() + Data + PreviousHash + Nonce.ToString());
             var result = hashString.ComputeHash(input);
-            return result.ToString();
+            return Encoding.UTF8.GetString(result).ToCharArray();
         }
 
-        public void MineBlock(int difficulty)
+        public void MineBlock(uint difficulty)
         {
-            var difficultyList = new char[difficulty + 1];
-            for (int i = 0; i < difficulty + 1; i++)
+            var difficultyList = new char[difficulty];
+            for (int i = 0; i < difficulty; i++)
             {
                 difficultyList[i] = '0';
             }
 
-            while(Hash.Substring(0, difficulty).ToCharArray() != difficultyList)
+            while(Hash.GetValue(0, (int)difficulty) != difficultyList)
             {
                 Nonce++;
                 Hash = CalculateHash();

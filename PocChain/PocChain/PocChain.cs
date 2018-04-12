@@ -5,7 +5,7 @@ namespace PocChain
     public class PocChain
     {
         public List<PocBlock> Chain { get; set; }
-        public int Difficulty { get; set; }
+        public uint Difficulty { get; set; }
 
         public PocChain()
         {
@@ -15,7 +15,7 @@ namespace PocChain
 
         private PocBlock CreateGenesisBlock()
         {
-            return new PocBlock(0, "Genisis Block", "0");
+            return new PocBlock(0, "Genisis Block", new char[0]);
         }
 
         public PocBlock GetLatestBlock()

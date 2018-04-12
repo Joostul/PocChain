@@ -48,12 +48,18 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateValidBlock.cs" />
-    <Compile Include="CreateValidChain.cs" />
+    <Compile Include="BlockTests.cs" />
+    <Compile Include="ChainTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PocChain\PocChain.csproj">
+      <Project>{8037E438-230F-49E9-B1DA-09ABD67AA1FE}</Project>
+      <Name>PocChain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
