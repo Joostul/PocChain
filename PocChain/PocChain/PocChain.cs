@@ -15,7 +15,7 @@ namespace PocChain
 
         private PocBlock CreateGenesisBlock()
         {
-            return new PocBlock(0, "Genisis Block", new char[0]);
+            return new PocBlock(0, "Genisis Block", "0");
         }
 
         public PocBlock GetLatestBlock()

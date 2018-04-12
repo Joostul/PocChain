@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using Scrypt;
 
 namespace PocChain
 {
@@ -10,10 +11,10 @@ namespace PocChain
         public DateTime TimeStamp { get; }
         public object Data { get; }
         public uint Nonce { get; private set; }
-        public char[] PreviousHash { get; set; }
-        public char[] Hash { get; set; }
+        public string PreviousHash { get; set; }
+        public string Hash { get; set; }
 
-        public PocBlock(long index, object data, char[] previousHash)
+        public PocBlock(long index, object data, string previousHash)
         {
             Index = index;
             TimeStamp = DateTime.UtcNow;
@@ -22,12 +23,18 @@ namespace PocChain
             Hash = CalculateHash();
         }
 
-        public char[] CalculateHash()
+        public string CalculateHash()
         {
-            var hashString = new SHA256Managed();
-            var input = Encoding.UTF8.GetBytes(Index + TimeStamp.ToString() + Data + PreviousHash + Nonce.ToString());
-            var result = hashString.ComputeHash(input);
-            return Encoding.UTF8.GetString(result).ToCharArray();
+            var hasher = new SHA256Managed();
+            var bytes = Encoding.UTF8.GetBytes(Index + TimeStamp.ToString() + Data + PreviousHash + Nonce.ToString());
+            
+            var hash = hasher.ComputeHash(bytes);
+            string result = string.Empty;
+            foreach (var b in hash)
+            {
+                result += String.Format("{0:x2}", b);
+            }
+            return result;
         }
 
         public void MineBlock(uint difficulty)
@@ -38,7 +45,7 @@ namespace PocChain
                 difficultyList[i] = '0';
             }
 
-            while(Hash.GetValue(0, (int)difficulty) != difficultyList)
+            while(Hash.Substring(0, (int)difficulty) != new string(difficultyList))
             {
                 Nonce++;
                 Hash = CalculateHash();

@@ -9,7 +9,7 @@ namespace UnitTests
     {
         private int index = 1;
         private object data = "{ \"address\": \"Joost\", \"value:\", \"42\" }";
-        private char[] previousHash = new char[0];
+        private string previousHash = "0";
 
         [TestMethod]
         public void CreateValidBlock()
@@ -33,7 +33,7 @@ namespace UnitTests
             var block = new PocBlock(index, data, previousHash);
 
             // Act
-            block.MineBlock(2);
+            block.MineBlock(4);
 
             // Assert
             Assert.IsNotNull(block);
