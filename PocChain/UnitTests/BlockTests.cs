@@ -7,9 +7,7 @@ namespace UnitTests
     [TestClass]
     public class BlockTests
     {
-        private int index = 1;
-        private object data = "{ \"address\": \"Joost\", \"value:\", \"42\" }";
-        private string previousHash = "0";
+        private readonly object data = "{ \"address\": \"Joost\", \"value:\", \"42\" }";
 
         [TestMethod]
         public void CreateValidBlock()
@@ -17,20 +15,18 @@ namespace UnitTests
             // Arrange
 
             // Act
-            var block = new PocBlock(index, data, previousHash);
+            var block = new PocBlock(data);
 
             // Assert
             Assert.IsNotNull(block);
-            Assert.AreEqual(index, block.Index);
             Assert.AreEqual(data, block.Data);
-            Assert.AreEqual(previousHash, block.PreviousHash);
         }
 
         [TestMethod]
         public void CreateAndMineBlock()
         {
             // Arrange
-            var block = new PocBlock(index, data, previousHash);
+            var block = new PocBlock(data);
 
             // Act
             block.MineBlock(4);
@@ -38,9 +34,7 @@ namespace UnitTests
             // Assert
             Assert.IsNotNull(block);
             Assert.IsNotNull(block.Nonce);
-            Assert.AreEqual(index, block.Index);
             Assert.AreEqual(data, block.Data);
-            Assert.AreEqual(previousHash, block.PreviousHash);
         }
     }
 }

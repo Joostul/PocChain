@@ -7,19 +7,17 @@ namespace PocChain
 {
     public class PocBlock
     {
-        public long Index { get; }
+        public long Index { get; set; }
         public DateTime TimeStamp { get; }
         public object Data { get; }
         public uint Nonce { get; private set; }
         public string PreviousHash { get; set; }
         public string Hash { get; set; }
 
-        public PocBlock(long index, object data, string previousHash)
+        public PocBlock(object data)
         {
-            Index = index;
             TimeStamp = DateTime.UtcNow;
             Data = data;
-            PreviousHash = previousHash;
             Hash = CalculateHash();
         }
 
